@@ -1,0 +1,7 @@
+console/
+PointOfSale/sales/migrations/
+PointOfSale/sales/__pycache__/
+PointOfSale/user_auth/migrations/
+PointOfSale/user_auth/__pycache__/
+PointOfSale/management/migrations/
+PointOfSale/management/__pycache__/

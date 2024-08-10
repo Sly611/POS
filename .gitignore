@@ -1,7 +1,9 @@
 console/
 PointOfSale/sales/migrations/
 PointOfSale/sales/__pycache__/
+PointOfSale/sales/test.py
 PointOfSale/user_auth/migrations/
 PointOfSale/user_auth/__pycache__/
 PointOfSale/management/migrations/
 PointOfSale/management/__pycache__/
+frontend/

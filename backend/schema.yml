@@ -1,0 +1,1578 @@
+openapi: 3.0.3
+info:
+  title: ''
+  version: 0.0.0
+paths:
+  /api/management/best_seller/:
+    get:
+      operationId: api_management_best_seller_retrieve
+      description: |-
+        Retrieve the top 5 best-selling products.
+
+        This method filters `Order_item` instances based on the provided time filter
+        (`day`, `week`, `month`, or `year`). It calculates the total quantity sold for
+        each product and returns the top 5 products with the highest total quantities.
+
+        The available filters are:
+            - `day`: Filters sales data for today.
+            - `week`: Filters sales data for the current week.
+            - `month`: Filters sales data for the current month.
+            - `year`: Filters sales data for the current year.
+
+        If no filter is provided, all available sales data is used.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing the filter parameter.
+            format (str, optional): The format of the response (default is None).
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the top 5 best-selling products
+                  and a status of `HTTP_200_OK` if sales data is available.
+                - A Response object containing a message indicating no sales data is available
+                  and a status of `HTTP_404_NOT_FOUND` if no sales data matches the filter.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/management/create_store/:
+    get:
+      operationId: api_management_create_store_retrieve
+      description: |-
+        Retrieve a list of all stores.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of all `Store` instances
+                  and a status of `HTTP_200_OK`.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_management_create_store_create
+      description: |-
+        Create a new store.
+
+        This method deserializes the incoming data using `StoreSrializer`,
+        validates it, and if valid, saves the new `Store` instance to the database.
+        It returns the serialized data of the created store or an error message if
+        the data is invalid.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing store data.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the newly
+                  created `Store` instance and a status of `HTTP_201_CREATED`
+                  if the data is valid.
+                - A Response object containing an error message and a status of
+                  `HTTP_400_BAD_REQUEST` if the data is invalid.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/management/expense/{id}:
+    get:
+      operationId: api_management_expense_retrieve
+      description: |-
+        Retrieve the details of a single expense by its primary key.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            pk (int): The primary key of the `Expenses` instance to retrieve.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the `Expenses` instance
+                  and a status of `HTTP_200_OK`.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: api_management_expense_update
+      description: |-
+        Update a single expense by its primary key.
+
+        This method deserializes the incoming data using `ExpenseSerializer`,
+        validates it, and if valid, updates the `Expenses` instance with the new data.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing updated expense data.
+            pk (int): The primary key of the `Expenses` instance to update.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the updated `Expenses` instance
+                  and a status of `HTTP_202_ACCEPTED` if the data is valid.
+                - A Response object containing an error message and a status of `HTTP_400_BAD_REQUEST`
+                  if the data is invalid.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: api_management_expense_destroy
+      description: |-
+        Delete a single expense by its primary key.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            pk (int): The primary key of the `Expenses` instance to delete.
+
+        Returns:
+            Response:
+                - A Response object with a success message and a status of `HTTP_200_OK`
+                  indicating that the expense was deleted successfully.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/management/expense/new/:
+    post:
+      operationId: api_management_expense_new_create
+      description: |-
+        Create a new expense.
+
+        This method deserializes the incoming data using `ExpenseSerializer`,
+        validates it, and if valid, saves the new `Expense` instance to the database.
+        It returns the serialized data of the created expense or an error message
+        if the data is invalid.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing expense data.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the newly
+                  created `Expense` instance and a status of `HTTP_201_CREATED`
+                  if the data is valid.
+                - A Response object containing an error message and a status of
+                  `HTTP_400_BAD_REQUEST` if the data is invalid.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/management/expense_category/:
+    get:
+      operationId: api_management_expense_category_retrieve
+      description: |-
+        Retrieve a list of all expense categories.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of all `Expense_category` instances
+                  and a status of `HTTP_200_OK`.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_management_expense_category_create
+      description: |-
+        Create a new expense category.
+
+        This method deserializes the incoming data using `Expense_categorySerializer`,
+        validates it, and if valid, saves the new `Expense_category` instance to the database.
+        It returns the serialized data of the created expense category.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing expense category data.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the newly
+                  created `Expense_category` instance and a status of `HTTP_201_CREATED`
+                  if the data is valid.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/management/expense_category/{id}:
+    get:
+      operationId: api_management_expense_category_retrieve_2
+      description: |-
+        Retrieve a single expense category by its primary key.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            pk (int): The primary key of the `Expense_category` instance to retrieve.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the `Expense_category` instance
+                  and a status of `HTTP_200_OK`.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: api_management_expense_category_update
+      description: |-
+        Update a single expense category by its primary key.
+
+        This method deserializes the incoming data using `Expense_categorySerializer`,
+        validates it, and if valid, updates the `Expense_category` instance with the
+        new data. Returns the serialized data of the updated instance.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing the updated expense
+                                   category data.
+            pk (int): The primary key of the `Expense_category` instance to update.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the updated `Expense_category`
+                  instance and a status of `HTTP_202_ACCEPTED` if the data is valid.
+                - A Response object containing an error message and a status of
+                  `HTTP_400_BAD_REQUEST` if the data is invalid.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: api_management_expense_category_destroy
+      description: |-
+        Delete a single expense category by its primary key.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            pk (int): The primary key of the `Expense_category` instance to delete.
+
+        Returns:
+            Response:
+                - A Response object containing a success message and a status of `HTTP_200_OK`
+                  indicating that the expense category was deleted successfully.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/management/expenses/:
+    get:
+      operationId: api_management_expenses_retrieve
+      description: |-
+        Retrieve a list of all expenses.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of all
+                  `Expenses` instances and a status of `HTTP_200_OK`.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/management/export-orders/:
+    get:
+      operationId: api_management_export_orders_retrieve
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/management/sale-profit/:
+    get:
+      operationId: api_management_sale_profit_retrieve
+      description: |-
+        Calculate and return the total profit from completed orders.
+
+        This method filters completed orders based on the provided filter parameters
+        (`week`, `month`, `year`) or a custom date range (`start_date`, `end_date`).
+        It then calculates the profit for these orders and returns the total profit.
+
+        Query Parameters:
+            filter (str, optional): A time period filter. Can be one of 'week', 'month', or 'year'.
+            start_date (str, optional): The start date for a custom date range, in 'YYYY-MM-DD' format.
+            end_date (str, optional): The end date for a custom date range, in 'YYYY-MM-DD' format.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing filter parameters.
+
+        Returns:
+            Response:
+                - A Response object containing the total profit and a status of `HTTP_200_OK`
+                  if profit data is available.
+                - A Response object containing a message indicating no sales data is available
+                  and a status of `HTTP_404_NOT_FOUND` if no profit data matches the filter.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/categories/:
+    get:
+      operationId: api_sales_categories_retrieve
+      description: |-
+        Retrieve a list of all categories.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+
+        Returns:
+            Response: A Response object containing serialized data of the
+            `Category` instances.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/categories{format}:
+    get:
+      operationId: api_sales_categories_formatted_retrieve
+      description: |-
+        Retrieve a list of all categories.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+
+        Returns:
+            Response: A Response object containing serialized data of the
+            `Category` instances.
+      parameters:
+      - in: path
+        name: format
+        schema:
+          type: string
+          enum:
+          - .json
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/category/{id}/:
+    get:
+      operationId: api_sales_category_retrieve
+      description: |-
+        Retrieve a single category by its primary key.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            pk (int): The primary key of the `Category` to retrieve.
+            format (str, optional): The format of the response (default is None).
+
+        Returns:
+            Response: A Response object containing serialized data of the
+            `Category` instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: api_sales_category_update
+      description: |-
+        Update a single category by its primary key.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing category data.
+            pk (int): The primary key of the `Category` to update.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the updated
+                  `Category` instance and a status of `HTTP_202_ACCEPTED`
+                  if the data is valid.
+                - A Response object containing validation errors and a status
+                  of `HTTP_400_BAD_REQUEST` if the data is invalid.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: api_sales_category_destroy
+      description: |-
+        Delete a single category by its primary key.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            pk (int): The primary key of the `Category` to delete.
+
+        Returns:
+            Response: A Response object with a status of `HTTP_200_OK`.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/sales/category/{id}{format}:
+    get:
+      operationId: api_sales_category_formatted_retrieve
+      description: |-
+        Retrieve a single category by its primary key.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            pk (int): The primary key of the `Category` to retrieve.
+            format (str, optional): The format of the response (default is None).
+
+        Returns:
+            Response: A Response object containing serialized data of the
+            `Category` instance.
+      parameters:
+      - in: path
+        name: format
+        schema:
+          type: string
+          enum:
+          - .json
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: api_sales_category_formatted_update
+      description: |-
+        Update a single category by its primary key.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing category data.
+            pk (int): The primary key of the `Category` to update.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the updated
+                  `Category` instance and a status of `HTTP_202_ACCEPTED`
+                  if the data is valid.
+                - A Response object containing validation errors and a status
+                  of `HTTP_400_BAD_REQUEST` if the data is invalid.
+      parameters:
+      - in: path
+        name: format
+        schema:
+          type: string
+          enum:
+          - .json
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: api_sales_category_formatted_destroy
+      description: |-
+        Delete a single category by its primary key.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            pk (int): The primary key of the `Category` to delete.
+
+        Returns:
+            Response: A Response object with a status of `HTTP_200_OK`.
+      parameters:
+      - in: path
+        name: format
+        schema:
+          type: string
+          enum:
+          - .json
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/sales/category/new/:
+    post:
+      operationId: api_sales_category_new_create
+      description: |-
+        Create a new category.
+
+        This method deserializes the incoming data using `CategorySerializer`,
+        validates it, and if valid, saves the new `Category` instance to the database.
+        It returns the serialized data of the created category or validation errors.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing category data.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the newly
+                  created `Category` instance and a status of `HTTP_201_CREATED`
+                  if the data is valid.
+                - A Response object containing validation errors and a status
+                  of `HTTP_400_BAD_REQUEST` if the data is invalid.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/category/new{format}:
+    post:
+      operationId: api_sales_category_new_formatted_create
+      description: |-
+        Create a new category.
+
+        This method deserializes the incoming data using `CategorySerializer`,
+        validates it, and if valid, saves the new `Category` instance to the database.
+        It returns the serialized data of the created category or validation errors.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing category data.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the newly
+                  created `Category` instance and a status of `HTTP_201_CREATED`
+                  if the data is valid.
+                - A Response object containing validation errors and a status
+                  of `HTTP_400_BAD_REQUEST` if the data is invalid.
+      parameters:
+      - in: path
+        name: format
+        schema:
+          type: string
+          enum:
+          - .json
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/check-stock/:
+    post:
+      operationId: api_sales_check_stock_create
+      description: |-
+        Check the stock availability for a product.
+
+        This method retrieves the `Product` instance based on the provided product ID,
+        checks if the requested quantity is available, and returns an appropriate response.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing product ID and quantity.
+
+        Returns:
+            Response:
+                - A Response object with a status of `HTTP_200_OK` if the requested quantity is available.
+                - A Response object with a message indicating that the requested quantity exceeds
+                  available stock if the quantity is not available.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/check-stock{format}:
+    post:
+      operationId: api_sales_check_stock_formatted_create
+      description: |-
+        Check the stock availability for a product.
+
+        This method retrieves the `Product` instance based on the provided product ID,
+        checks if the requested quantity is available, and returns an appropriate response.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing product ID and quantity.
+
+        Returns:
+            Response:
+                - A Response object with a status of `HTTP_200_OK` if the requested quantity is available.
+                - A Response object with a message indicating that the requested quantity exceeds
+                  available stock if the quantity is not available.
+      parameters:
+      - in: path
+        name: format
+        schema:
+          type: string
+          enum:
+          - .json
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/order-cancel/{id}:
+    delete:
+      operationId: api_sales_order_cancel_destroy
+      description: |-
+        Cancel an order and track the cancellation.
+
+        This method retrieves an `Order` instance by its primary key,
+        tracks the cancellation by creating an entry in `CancelledOrdersTracker`,
+        deletes the order, and returns a success message.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            pk (int): The primary key of the `Order` to cancel.
+
+        Returns:
+            Response: A Response object with a success message and a status of
+            `HTTP_204_NO_CONTENT`.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/sales/order-cancel/{id}{format}:
+    delete:
+      operationId: api_sales_order_cancel_formatted_destroy
+      description: |-
+        Cancel an order and track the cancellation.
+
+        This method retrieves an `Order` instance by its primary key,
+        tracks the cancellation by creating an entry in `CancelledOrdersTracker`,
+        deletes the order, and returns a success message.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            pk (int): The primary key of the `Order` to cancel.
+
+        Returns:
+            Response: A Response object with a success message and a status of
+            `HTTP_204_NO_CONTENT`.
+      parameters:
+      - in: path
+        name: format
+        schema:
+          type: string
+          enum:
+          - .json
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/sales/order-item/{id}:
+    get:
+      operationId: api_sales_order_item_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/order-item/{id}{format}:
+    get:
+      operationId: api_sales_order_item_formatted_retrieve
+      parameters:
+      - in: path
+        name: format
+        schema:
+          type: string
+          enum:
+          - .json
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/order/{id}/:
+    get:
+      operationId: api_sales_order_retrieve
+      description: |-
+        Retrieve the details of a single order by its primary key.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            pk (int): The primary key of the `Order` to retrieve.
+            format (str, optional): The format of the response (default is None).
+
+        Returns:
+            Response: A Response object containing serialized data of the
+            `Order` instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/order/{id}{format}:
+    get:
+      operationId: api_sales_order_formatted_retrieve
+      description: |-
+        Retrieve the details of a single order by its primary key.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            pk (int): The primary key of the `Order` to retrieve.
+            format (str, optional): The format of the response (default is None).
+
+        Returns:
+            Response: A Response object containing serialized data of the
+            `Order` instance.
+      parameters:
+      - in: path
+        name: format
+        schema:
+          type: string
+          enum:
+          - .json
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/order/new/:
+    post:
+      operationId: api_sales_order_new_create
+      description: |-
+        Create a new order and calculate its total price.
+
+        This method deserializes the incoming data using `OrderSerializer`,
+        validates it, and if valid, saves the new `Order` instance to the database.
+        It then calculates the total price of the order, saves the updated order,
+        and returns the serialized data of the created order or validation errors.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing order data.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the newly
+                  created `Order` instance and a status of `HTTP_201_CREATED`
+                  if the data is valid.
+                - A Response object containing validation errors and a status
+                  of `HTTP_400_BAD_REQUEST` if the data is invalid.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/order/new{format}:
+    post:
+      operationId: api_sales_order_new_formatted_create
+      description: |-
+        Create a new order and calculate its total price.
+
+        This method deserializes the incoming data using `OrderSerializer`,
+        validates it, and if valid, saves the new `Order` instance to the database.
+        It then calculates the total price of the order, saves the updated order,
+        and returns the serialized data of the created order or validation errors.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing order data.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the newly
+                  created `Order` instance and a status of `HTTP_201_CREATED`
+                  if the data is valid.
+                - A Response object containing validation errors and a status
+                  of `HTTP_400_BAD_REQUEST` if the data is invalid.
+      parameters:
+      - in: path
+        name: format
+        schema:
+          type: string
+          enum:
+          - .json
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/order/search/:
+    get:
+      operationId: api_sales_order_search_retrieve
+      description: |-
+        Search for orders based on the provided query parameters.
+
+        This method retrieves query parameters from the request to filter
+        `Order` instances. It applies filters for status, payment method,
+        date created, from date, and upto date as specified in the query
+        parameters and returns the filtered list of orders.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing query parameters.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the filtered
+                  `Order` instances if matches are found.
+                - A Response object with a status of `HTTP_404_NOT_FOUND` if no
+                  orders match the query parameters.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/order/search{format}:
+    get:
+      operationId: api_sales_order_search_formatted_retrieve
+      description: |-
+        Search for orders based on the provided query parameters.
+
+        This method retrieves query parameters from the request to filter
+        `Order` instances. It applies filters for status, payment method,
+        date created, from date, and upto date as specified in the query
+        parameters and returns the filtered list of orders.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing query parameters.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the filtered
+                  `Order` instances if matches are found.
+                - A Response object with a status of `HTTP_404_NOT_FOUND` if no
+                  orders match the query parameters.
+      parameters:
+      - in: path
+        name: format
+        schema:
+          type: string
+          enum:
+          - .json
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/orders/:
+    get:
+      operationId: api_sales_orders_retrieve
+      description: |-
+        Retrieve a list of all orders.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+
+        Returns:
+            Response: A Response object containing serialized data of the
+            `Order` instances.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/orders{format}:
+    get:
+      operationId: api_sales_orders_formatted_retrieve
+      description: |-
+        Retrieve a list of all orders.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+
+        Returns:
+            Response: A Response object containing serialized data of the
+            `Order` instances.
+      parameters:
+      - in: path
+        name: format
+        schema:
+          type: string
+          enum:
+          - .json
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/product/{id}/:
+    get:
+      operationId: api_sales_product_retrieve
+      description: |-
+        Retrieve a single product by its primary key.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            pk (int): The primary key of the `Product` to retrieve.
+            format (str, optional): The format of the response (default is None).
+
+        Returns:
+            Response: A Response object containing serialized data of the
+            `Product` instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: api_sales_product_update
+      description: |-
+        Update a single product by its primary key.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing product data.
+            pk (int): The primary key of the `Product` to update.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the updated
+                  `Product` instance and a status of `HTTP_202_ACCEPTED`
+                  if the data is valid.
+                - A Response object containing validation errors and a status
+                  of `HTTP_400_BAD_REQUEST` if the data is invalid.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: api_sales_product_destroy
+      description: |-
+        Delete a single product by its primary key.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            pk (int): The primary key of the `Product` to delete.
+
+        Returns:
+            Response: A Response object with a status of `HTTP_200_OK`.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/sales/product/{id}{format}:
+    get:
+      operationId: api_sales_product_formatted_retrieve
+      description: |-
+        Retrieve a single product by its primary key.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            pk (int): The primary key of the `Product` to retrieve.
+            format (str, optional): The format of the response (default is None).
+
+        Returns:
+            Response: A Response object containing serialized data of the
+            `Product` instance.
+      parameters:
+      - in: path
+        name: format
+        schema:
+          type: string
+          enum:
+          - .json
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: api_sales_product_formatted_update
+      description: |-
+        Update a single product by its primary key.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing product data.
+            pk (int): The primary key of the `Product` to update.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the updated
+                  `Product` instance and a status of `HTTP_202_ACCEPTED`
+                  if the data is valid.
+                - A Response object containing validation errors and a status
+                  of `HTTP_400_BAD_REQUEST` if the data is invalid.
+      parameters:
+      - in: path
+        name: format
+        schema:
+          type: string
+          enum:
+          - .json
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: api_sales_product_formatted_destroy
+      description: |-
+        Delete a single product by its primary key.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            pk (int): The primary key of the `Product` to delete.
+
+        Returns:
+            Response: A Response object with a status of `HTTP_200_OK`.
+      parameters:
+      - in: path
+        name: format
+        schema:
+          type: string
+          enum:
+          - .json
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/sales/product/new/:
+    post:
+      operationId: api_sales_product_new_create
+      description: |-
+        Handle POST requests to create a new product.
+
+        This method deserializes the incoming data using `ProductSerializer`,
+        validates it, and if valid, saves the new `Product` instance to the database.
+        It returns the serialized data of the created product or validation errors.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing product data.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the newly
+                created `Product` instance and a status of `HTTP_201_CREATED`
+                if the data is valid.
+                - A Response object containing validation errors and a status
+                of `HTTP_400_BAD_REQUEST` if the data is invalid.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/product/new{format}:
+    post:
+      operationId: api_sales_product_new_formatted_create
+      description: |-
+        Handle POST requests to create a new product.
+
+        This method deserializes the incoming data using `ProductSerializer`,
+        validates it, and if valid, saves the new `Product` instance to the database.
+        It returns the serialized data of the created product or validation errors.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing product data.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the newly
+                created `Product` instance and a status of `HTTP_201_CREATED`
+                if the data is valid.
+                - A Response object containing validation errors and a status
+                of `HTTP_400_BAD_REQUEST` if the data is invalid.
+      parameters:
+      - in: path
+        name: format
+        schema:
+          type: string
+          enum:
+          - .json
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/products/:
+    get:
+      operationId: api_sales_products_retrieve
+      description: |-
+        Handle GET requests to retrieve a list of products.
+
+        This method serializes a list of `Product` instances using
+        `ProductSerializer` and returns the serialized data in the response.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+
+        Returns:
+            Response: A Response object containing serialized data
+            of the `Product` instances.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/products{format}:
+    get:
+      operationId: api_sales_products_formatted_retrieve
+      description: |-
+        Handle GET requests to retrieve a list of products.
+
+        This method serializes a list of `Product` instances using
+        `ProductSerializer` and returns the serialized data in the response.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+
+        Returns:
+            Response: A Response object containing serialized data
+            of the `Product` instances.
+      parameters:
+      - in: path
+        name: format
+        schema:
+          type: string
+          enum:
+          - .json
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/products/search/:
+    get:
+      operationId: api_sales_products_search_retrieve
+      description: |-
+        Search for products based on the provided query parameters.
+
+        This method retrieves query parameters from the request to filter
+        `Product` instances. It applies the filters for name, category, UPC,
+        price, and size as specified in the query parameters and returns the
+        filtered list of products.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing query parameters.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the filtered
+                  `Product` instances if matches are found.
+                - A Response object with a status of `HTTP_404_NOT_FOUND` if no
+                  products match the query parameters.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/sales/products/search{format}:
+    get:
+      operationId: api_sales_products_search_formatted_retrieve
+      description: |-
+        Search for products based on the provided query parameters.
+
+        This method retrieves query parameters from the request to filter
+        `Product` instances. It applies the filters for name, category, UPC,
+        price, and size as specified in the query parameters and returns the
+        filtered list of products.
+
+        Args:
+            request (HttpRequest): The HTTP request object containing query parameters.
+
+        Returns:
+            Response:
+                - A Response object containing serialized data of the filtered
+                  `Product` instances if matches are found.
+                - A Response object with a status of `HTTP_404_NOT_FOUND` if no
+                  products match the query parameters.
+      parameters:
+      - in: path
+        name: format
+        schema:
+          type: string
+          enum:
+          - .json
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/user/login/:
+    post:
+      operationId: api_user_login_create
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/user/logout/:
+    post:
+      operationId: api_user_logout_create
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/user/register/:
+    post:
+      operationId: api_user_register_create
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

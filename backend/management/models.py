@@ -1,12 +1,27 @@
 from django.db import models
+from django.shortcuts import get_object_or_404
 from sales.models import Product
 # Create your models here.
+
+def store_logo_upload_path(filename):
+    return f"logo/{filename}"
+
 
 class Store(models.Model):
     bussines_name = models.CharField(max_length=64)
     business_email = models.EmailField()
     address = models.CharField(max_length=256)
     open_hours = models.CharField(max_length=256)
+    logo = models.FileField(upload_to=store_logo_upload_path,null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if self.id:
+            prev = get_object_or_404(Store, id=self.id)
+            if prev.logo != self.logo:
+                prev.logo.delete(save=False)
+                super(Store, self).save(*args, **kwargs)
+            
+
 
     def __str__(self):
         return self.bussines_name

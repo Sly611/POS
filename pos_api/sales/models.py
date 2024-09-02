@@ -46,11 +46,12 @@ class Payment(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=200)
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING , related_name='category_products')
-    upc = models.CharField(max_length=13, unique=True)
+    upc = models.CharField(max_length=13, unique=True, null=True, blank=True)
     size = models.CharField(max_length=5)
     quantity = models.IntegerField()
     cost_price = models.DecimalField(name='cost', max_digits=10, decimal_places=2)
     selling_price = models.DecimalField(name='price', max_digits=10, decimal_places=2)
+    last_restocked = models.DateField(auto_now=True)
 
     def save(self, *args, **kwargs):
         if self.name:

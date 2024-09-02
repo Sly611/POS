@@ -24,7 +24,7 @@ urlpatterns = [
     path('order/new/', views.OrderCreateView.as_view(), name='create_order'),
     path('order/<int:pk>/', views.OrderDetailView.as_view(), name='order_details'),
     path('order/search/', views.OrderSearchAPIView.as_view(), name='order_search'),
-    path('order-cancel/<int:pk>', views.OrderCancelView.as_view(), name='order_cancel' ),
+    path('order-cancel/<int:pk>/', views.OrderCancelView.as_view(), name='order_cancel' ),
 
     #Handles Get, Post, Update and Delete for Order_item entity
     path('order-item/<int:pk>', views.OrderItemDetailView.as_view(), name='order_item_detail'),

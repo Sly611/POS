@@ -1,6 +1,6 @@
 from drf_spectacular.utils import OpenApiParameter, OpenApiResponse, extend_schema, extend_schema_view
 from drf_spectacular.types import OpenApiTypes
-from .serializers import ExpenseSerializer, StoreSerializer, Expense_categorySerializer, StaffSerializer
+from .serializers import ExpenseSerializer, StoreSerializer, Expense_categorySerializer, StaffSerializer, RestockSerializer
 
 # Example schema for StaffListView
 staff_list_schema = extend_schema(
@@ -152,6 +152,15 @@ expense_category_detail_get_schema = extend_schema(
         responses={200: OpenApiResponse(description="Deleted successfully")},
 )
 
-
-
-
+# Restock product endpoint
+restock_schema = extend_schema(
+    description="Updates the quantity of the product.",
+    request=RestockSerializer,
+    parameters=[
+        OpenApiParameter(name="quantity", type=OpenApiTypes.NUMBER, required=True)
+    ],
+    responses={
+        202: OpenApiResponse(response=Expense_categorySerializer),
+        304: OpenApiResponse(description="Not modified"),
+        }
+)

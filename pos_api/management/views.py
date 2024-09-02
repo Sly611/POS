@@ -589,6 +589,53 @@ class SalesProfitListView(APIView):
             }
             return Response(response_data, status=HTTP_404_NOT_FOUND)
 
+
+class RestockProductView(APIView):
+    """
+    API view to handle the restocking of a product.
+
+    Allows partial updates to the `Product` instance specified by the `pk`.
+    The request should contain the necessary data for restocking, such as the quantity to add.
+
+    Methods
+    -------
+    patch(request, pk)
+        Partially updates a `Product` instance with new restock data.
+
+    """
+    def patch(self, request, pk):
+        """
+        Partially updates a `Product` instance with new restock data.
+
+        This method retrieves a `Product` object based on the provided primary key (`pk`) and attempts
+        to update it using the data provided in the request. If the data is valid, the product is 
+        restocked and a success message is returned. If the data is invalid, the errors are returned.
+
+        Args:
+            request (Request): The HTTP request object containing the restock data in `request.data`.
+            pk (int): The primary key of the `Product` instance to be updated.
+
+        Returns:
+            Response: A JSON response with a success message and HTTP status 202 if the product
+                      is successfully restocked, or an error message and HTTP status 304 if the
+                      restocking fails due to invalid data.
+
+        Raises:
+            Http344: If no `Product` instance with the given `pk` is found.
+        """
+        product = get_object_or_404(Product, id=pk)
+        serializer = RestockSerializer(data=request.data)
+        if serializer.is_valid():
+            quantity = serializer.validated_data["quantity"]
+
+            product.quantity += quantity
+            product.save()
+            
+            return Response({"message": "Restock successful"}, status=HTTP_202_ACCEPTED)
+        else:
+            return Response(serializer.errors, status=HTTP_304_NOT_MODIFIED)
+        
+
         
 class ExportOrdersToCsv(APIView):
 

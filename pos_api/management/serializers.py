@@ -1,5 +1,6 @@
 from .models import *
 from rest_framework import serializers
+from sales.models import Product
 
 
 class StaffSerializer(serializers.ModelSerializer):
@@ -84,3 +85,8 @@ class ExpenseSerializer(serializers.ModelSerializer):
         expense = Expenses.objects.create(category=category, **validated_data)
         
         return expense
+
+
+class RestockSerializer(serializers.Serializer):
+    quantity = serializers.IntegerField(min_value=1)
+
